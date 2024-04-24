@@ -1,5 +1,16 @@
 const express = require("express");
-const { createAdmin, adminLogin, updatedPassword, updateAdmin, addAdmin, getAllAdmin, deleteAdmin } = require("../Controller/adminController");
+const {
+  createAdmin,
+  adminLogin,
+  updatedPassword,
+  updateAdmin,
+  addAdmin,
+  getAllAdmin,
+  deleteAdmin,
+  addDepartment,
+  getAllDepartments,
+  deleteDepartment,
+} = require("../Controller/adminController");
 const router = express.Router();
 
 //ADMIN ROUTES
@@ -12,5 +23,8 @@ router.get("/getalladmin", getAllAdmin);
 router.delete("/deleteadmin/:id", deleteAdmin);
 
 //DEPARTMENT ROUTES
+router.post("/adddepartment", addDepartment);
+router.get("/getalldepartment", getAllDepartments);
+router.delete("/deletedepartment/:id", deleteDepartment);
 
-module.exports = router
+module.exports = router;
