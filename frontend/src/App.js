@@ -8,6 +8,10 @@ import AdminHome from "./Components/AdminPage/AdminHome";
 import AddAdmin from "./Components/AdminPage/AddAdmin/AddAdmin";
 import DeleteAdmin from "./Components/AdminPage/DeleteAdmin/DeleteAdmin";
 import AddDepartment from "./Components/AdminPage/AddDepartment/AddDepartment";
+import DeleteDepartment from "./Components/AdminPage/DeleteDepartment/DeleteDepartment";
+import AddFaculty from "./Components/AdminPage/AddFaculty/AddFaculty";
+import DeleteFaculty from "./Components/AdminPage/DeleteFaculty/DeleteFaculty";
+import AddStudent from "./Components/AdminPage/AddStudent/AddStudent";
 
 function App() {
   return (
@@ -20,6 +24,10 @@ function App() {
               <Route path="/admin/addadmin" element={<AddAdmin/>}/>
               <Route path="/admin/deleteadmin" element={<DeleteAdmin/>}/>
               <Route path="/admin/adddepartment" element={<AddDepartment/>}/>
+              <Route path="/admin/deletedepartment" element={<DeleteDepartment/>}/>
+              <Route path="/admin/addfaculty" element={<AddFaculty/>}/>
+              <Route path="/admin/deletefaculty" element={<DeleteFaculty/>}/>
+              <Route path="/admin/addstudent" element={<AddStudent/>}/>
           {/* <Route path="/login/facultylogin" element={<FacultyLogin/>}/> */}
           {/* <Route path="/login/studentlogin" element={<StudentLogin/>}/> */}
           {/* <Route path="/login/librarianlogin" element={<LibraryLogin/>}/> */}

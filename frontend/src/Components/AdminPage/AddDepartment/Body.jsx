@@ -42,7 +42,7 @@ const Body = () => {
       <div className="space-y-5">
         <div className="flex text-gray-400 items-center space-x-2">
           <EngineeringIcon />
-          <h1>Add Admin</h1>
+          <h1>Add Department</h1>
         </div>
         <div className=" mr-10 bg-white flex flex-col rounded-xl ">
           <form className={classes.adminForm0} onSubmit={handleSubmit}>
@@ -51,7 +51,7 @@ const Body = () => {
                 <div className={classes.adminForm3}>
                   <h1 className={classes.adminLabel}>Department :</h1>
                   <input
-                    placeholder="Full Name"
+                    placeholder="Department Name"
                     required
                     className={classes.adminInput}
                     type="text"
