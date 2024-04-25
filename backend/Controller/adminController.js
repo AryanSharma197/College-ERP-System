@@ -125,8 +125,7 @@ const addAdmin = async (req, res) => {
   try {
     const { name, email, password, dob, gender, phone, joiningYear } = req.body;
     const errors = { Error: String };
-    const existingAdmin =
-      (await Admin.findOne({ email })) || (await Admin.findOne({ phone }));
+    const existingAdmin = await Admin.findOne({ email }) 
     if (existingAdmin) {
       errors.Error = "Already exists";
       return res.status(400).json({ errors });
@@ -151,7 +150,7 @@ const addAdmin = async (req, res) => {
 const getAllAdmin = async (req, res) => {
   try {
     const admins = await Admin.find();
-    res.status(200).json({ result: admins });
+    res.status(200).json( admins );
   } catch (error) {
     res.status(500).json(error);
   }
@@ -198,7 +197,7 @@ const addDepartment = async (req, res) => {
 const getAllDepartments = async (req, res) => {
   try {
     const departments = await Department.find();
-    res.status(200).json({ result: departments });
+    res.status(200).json( departments );
   } catch (error) {
     res.status(500).json(error);
   }
@@ -244,7 +243,7 @@ const addFaculty = async (req, res) => {
 const getALlFaculty = async (req, res) => {
   try{
     const faculties = await Faculty.find();
-    res.status(200).json({ result: faculties });
+    res.status(200).json( faculties );
   } catch(error){
     res.status(500).json(error);
   }
@@ -334,7 +333,7 @@ const addStudent = async (req, res) => {
 const getAllStudent = async (req, res) => {
   try{
     const students = await Student.find();
-    res.status(200).json({ result: students });
+    res.status(200).json( students );
   } catch(error){
     res.status(500).json(error);
   }
