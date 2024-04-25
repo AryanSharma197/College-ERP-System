@@ -1,5 +1,6 @@
 const Admin = require("../Models/admin.js");
 const Department = require("../Models/department.js");
+const Faculty = require("../Models/faculty.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -210,6 +211,96 @@ const deleteDepartment = async (req, res) => {
     }
 }
 
+const addFaculty = async (req, res) => {
+  try{
+    const { name, email, password, gender, phone, joiningYear, department } = req.body;
+    const errors = { Error: String };
+    const existingFaculty =
+      (await Faculty.findOne({ email })) || (await Faculty.findOne({ phone }));
+    if (existingFaculty) {
+      errors.Error = "Already exists";
+      return res.status(400).json({ errors });
+    }
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const newFaculty = new Faculty({
+      name,
+      email,
+      password: hashedPassword,
+      gender,
+      phone,
+      joiningYear,
+      department
+    });
+    await newFaculty.save();
+    res.status(200).json({ result: newFaculty });
+  }
+  catch(error){
+    res.status(500).json(error);
+  }
+}
+
+const getALlFaculty = async (req, res) => {
+  try{
+    const faculties = await Faculty.find();
+    res.status(200).json({ result: faculties });
+  } catch(error){
+    res.status(500).json(error);
+  }
+}
+
+const deleteFaculty = async (req, res) => {
+  try{
+    const deletedFaculty = await faculty.findByIdAndDelete(req.params.id);
+    res.status(200).json({ result: deletedFaculty });
+  } catch(error){
+    res.status(500).json(error);
+  }
+}
+
+const addSubject = async (req, res) => {
+  try{
+    const {subjectName, subjectCode, department, semester, teacher, totalLectures, type, credits} = req.body;
+    const errors = { Error: String };
+    const existingSubject = await Subject.findOne({subjectCode});
+    if (existingSubject) {
+      errors.Error = "Already exists";
+      return res.status(400).json({ errors });
+    }
+    const newSubject = new Subject({
+      subjectName,
+      subjectCode,
+      department,
+      semester,
+      teacher,
+      totalLectures,
+      type,
+      credits
+    })
+    await newSubject.save();
+    res.status(200).json({ result: newSubject });
+  } catch(error){
+    res.status(500).json(error);
+  }
+}
+
+const getAllSubject = async (req, res) => {
+  try{
+    const subjects = await Subject.find();
+    res.status(200).json({ result: subjects });
+  } catch(error){
+    res.status(500).json(error);
+  }
+}
+
+const deleteSubject = async (req, res) => {
+  try{
+    const deletedSubject = await Subject.findByIdAndDelete(req.params.id);
+    res.status(200).json({ result: deletedSubject });
+  } catch(error){
+    res.status(500).json(error);
+  }
+}
+
 module.exports = {
   createAdmin,
   adminLogin,
@@ -221,4 +312,10 @@ module.exports = {
   addDepartment,
   getAllDepartments,
   deleteDepartment,
+  addFaculty, 
+  getALlFaculty,
+  deleteFaculty,
+  addSubject,
+  getAllSubject,
+  deleteSubject
 };

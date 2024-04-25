@@ -10,6 +10,12 @@ const {
   addDepartment,
   getAllDepartments,
   deleteDepartment,
+  addFaculty,
+  getALlFaculty,
+  deleteFaculty,
+  addSubject,
+  getAllSubject,
+  deleteSubject
 } = require("../Controller/adminController");
 const router = express.Router();
 
@@ -26,5 +32,15 @@ router.delete("/deleteadmin/:id", deleteAdmin);
 router.post("/adddepartment", addDepartment);
 router.get("/getalldepartment", getAllDepartments);
 router.delete("/deletedepartment/:id", deleteDepartment);
+
+//FACULTY ROUTES
+router.post("/addfaculty", addFaculty);
+router.get("/getallfaculty", getALlFaculty);
+router.delete("/deletefaculty/:id", deleteFaculty);
+
+//SUBJECT ROUTES
+router.post("/addsubject", addSubject);
+router.get("/getallsubject", getAllSubject);
+router.delete("/deletesubject/:id", deleteSubject);
 
 module.exports = router;
