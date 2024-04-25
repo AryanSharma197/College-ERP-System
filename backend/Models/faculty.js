@@ -29,6 +29,10 @@ const facultySchema = new mongoose.Schema({
         ref: "departments",
         required: true
     },
+    dob: {
+        type: String,
+        required: true
+    },
     joiningYear: {
         type: String,
         required: true

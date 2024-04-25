@@ -214,7 +214,7 @@ const deleteDepartment = async (req, res) => {
 
 const addFaculty = async (req, res) => {
   try{
-    const { name, email, password, gender, phone, joiningYear, department } = req.body;
+    const { name, email, password, gender, phone, joiningYear, department, dob } = req.body;
     const errors = { Error: String };
     const existingFaculty =
       (await Faculty.findOne({ email })) || (await Faculty.findOne({ phone }));
@@ -230,7 +230,8 @@ const addFaculty = async (req, res) => {
       gender,
       phone,
       joiningYear,
-      department
+      department,
+      dob
     });
     await newFaculty.save();
     res.status(200).json({ result: newFaculty });
