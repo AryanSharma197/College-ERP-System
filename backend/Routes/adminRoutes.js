@@ -11,7 +11,7 @@ const {
   getAllDepartments,
   deleteDepartment,
   addFaculty,
-  getALlFaculty,
+  getAllFaculty,
   deleteFaculty,
   addSubject,
   getAllSubject,
@@ -41,7 +41,7 @@ router.delete("/deletedepartment/:id", deleteDepartment);
 
 //FACULTY ROUTES
 router.post("/addfaculty", addFaculty);
-router.get("/getallfaculty", getALlFaculty);
+router.get("/getallfaculty", getAllFaculty);
 router.delete("/deletefaculty/:id", deleteFaculty);
 
 //SUBJECT ROUTES

@@ -241,18 +241,55 @@ const addFaculty = async (req, res) => {
   }
 }
 
-const getALlFaculty = async (req, res) => {
-  try{
-    const faculties = await Faculty.find();
-    res.status(200).json( faculties );
-  } catch(error){
+// const getALlFaculty = async (req, res) => {
+//   try{
+//     const faculties = await Faculty.find();
+//     res.status(200).json( faculties );
+//   } catch(error){
+//     res.status(500).json(error);
+//   }
+// }
+
+const getAllFaculty = async (req, res) => {
+  try {
+    const faculties = await Faculty.aggregate([
+      {
+        $lookup: {
+          from: "departments", // Name of the department collection
+          localField: "department",
+          foreignField: "_id",
+          as: "department"
+        }
+      },
+      {
+        $unwind: "$department"
+      },
+      {
+        $project: {
+          name: 1,
+          email: 1,
+          password: 1,
+          gender: 1,
+          phone: 1,
+          dob: 1,
+          joiningYear: 1,
+          passwordUpdated: 1,
+          department: "$department.department" // Project the department name
+        }
+      }
+    ]);
+
+    res.status(200).json(faculties);
+  } catch (error) {
     res.status(500).json(error);
   }
 }
 
+
+
 const deleteFaculty = async (req, res) => {
   try{
-    const deletedFaculty = await faculty.findByIdAndDelete(req.params.id);
+    const deletedFaculty = await Faculty.findByIdAndDelete(req.params.id);
     res.status(200).json({ result: deletedFaculty });
   } catch(error){
     res.status(500).json(error);
@@ -394,7 +431,7 @@ module.exports = {
   getAllDepartments,
   deleteDepartment,
   addFaculty, 
-  getALlFaculty,
+  getAllFaculty,
   deleteFaculty,
   addSubject,
   getAllSubject,
