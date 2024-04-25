@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
-const department = require("./department");
 
-const facultySchema = new mongoose.Schema({
+const studentSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
@@ -15,6 +14,10 @@ const facultySchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    dob: {
+        type: String,
+        required: true
+    },
     gender: {
         type: String,
         required: true
@@ -22,16 +25,23 @@ const facultySchema = new mongoose.Schema({
     phone: {
         type: Number,
         required: true,
-        unique: true
+        unique: true    
     },
     department: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "departments",
         required: true
     },
-    joiningYear: {
+    semester: {
         type: String,
-        required: true
+        required: true,
+        enum: ["1", "2", "3", "4", "5", "6", "7", "8"],
+        unique: true
+    },
+    rollNo: {
+        type: String,
+        required: true,
+        unique: true
     },
     passwordUpdated: {
         type: Boolean,
@@ -39,4 +49,4 @@ const facultySchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model("faculty", facultySchema)
+module.exports = mongoose.model("student", studentSchema)

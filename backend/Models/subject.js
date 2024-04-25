@@ -11,8 +11,8 @@ const subjectSchema = new mongoose.Schema({
         unique: true
     },
     department: {
-        type: Schema.Types.ObjectId,
-        ref: "department",
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "departments",
         required: true,
         unique: true
     },
@@ -22,8 +22,8 @@ const subjectSchema = new mongoose.Schema({
         enum: ["1", "2", "3", "4", "5", "6", "7", "8"],
     },
     teacher: {
-        type: Schema.Types.ObjectId,
-        ref: "teacher",
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "faculties",
         required: true,
         unique: true
     },

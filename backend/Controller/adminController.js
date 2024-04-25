@@ -1,6 +1,8 @@
 const Admin = require("../Models/admin.js");
 const Department = require("../Models/department.js");
 const Faculty = require("../Models/faculty.js");
+const Student = require("../Models/student.js");
+const Notice = require("../Models/notice.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -301,6 +303,85 @@ const deleteSubject = async (req, res) => {
   }
 }
 
+const addStudent = async (req, res) => {
+  try{
+    const {name, email, password, dob, gender, phone, department, semester, rollNo} = req.body;
+    const errors = { Error: String };
+    const existingStudent = (await Student.findOne({email})) || (await Student.findOne({phone}));
+    if (existingStudent) {
+      errors.Error = "Already exists";
+      return res.status(400).json({ errors });
+    }
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const newStudent = new Student({
+      name,
+      email,
+      password: hashedPassword,
+      dob,
+      gender,
+      phone,
+      department,
+      semester,
+      rollNo
+    })
+    await newStudent.save();
+    res.status(200).json({ result: newStudent });
+  } catch(error){
+    res.status(500).json(error);
+  }
+}
+
+const getAllStudent = async (req, res) => {
+  try{
+    const students = await Student.find();
+    res.status(200).json({ result: students });
+  } catch(error){
+    res.status(500).json(error);
+  }
+}
+
+const deleteStudent = async (req, res) => {
+  try{
+    const deletedStudent = await Student.findByIdAndDelete(req.params.id);
+    res.status(200).json({ result: deletedStudent });
+  } catch(error){
+    res.status(500).json(error);
+  }
+}
+
+const createNotice = async (req, res) => {
+  try{
+    const {topic, description, noticeFor} = req.body;
+    const newNotice = new Notice({
+      title,
+      description,
+      date
+    })
+    await newNotice.save();
+    res.status(200).json({ result: newNotice });
+  } catch(error){
+    res.status(500).json(error);
+  }
+}
+
+const getAllNotice = async (req, res) => {
+  try{
+    const notices = await Notice.find();
+    res.status(200).json({ result: notices });
+  } catch(error){
+    res.status(500).json(error);
+  }
+}
+
+const deleteNotice = async (req, res) => {
+  try{
+    const deletedNotice = await Notice.findByIdAndDelete(req.params.id);
+    res.status(200).json({ result: deletedNotice });
+  } catch(error){
+    res.status(500).json(error);
+  }
+}
+
 module.exports = {
   createAdmin,
   adminLogin,
@@ -317,5 +398,11 @@ module.exports = {
   deleteFaculty,
   addSubject,
   getAllSubject,
-  deleteSubject
+  deleteSubject,
+  addStudent,
+  getAllStudent,
+  deleteStudent,
+  createNotice,
+  getAllNotice,
+  deleteNotice
 };
