@@ -9,19 +9,31 @@ const Body = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const [data, setData] = useState([]);
-  const [studentLength, setStudentLength] = useState(0);
+  const [teacher, setTeacher] = useState([]);
   const sem = [1, 2, 3, 4, 5, 6, 7, 8];
   const [value, setValue] = useState({
-    name: "",
-    email: "",
-    password: "",
-    dob: "",
-    gender: "",
-    phone: "",
+    subjectName: "",
+    subjectCode: "",
     department: "",
     semester: "",
-    rollNo: "",
+    teacher: "",
+    type: "",
+    credits: "",
+    totalLectures: "",
   });
+  useEffect(() => {
+    const fetchTeachers = async () => {
+      try {
+        const res = await fetch("http://localhost:8000/admin/getallfaculty");
+        const data = await res.json();
+        setTeacher(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchTeachers();
+  }, []);
+
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
@@ -40,53 +52,50 @@ const Body = () => {
     e.preventDefault();
     setError({});
     if (
-      !value.name ||
-      !value.email ||
-      !value.password ||
-      !value.dob ||
-      !value.gender ||
-      !value.phone ||
-      !value.department ||
-      !value.semester ||
-      !value.rollNo
+        !value.subjectName ||
+        !value.subjectCode ||
+        !value.department ||
+        !value.semester ||
+        !value.teacher ||
+        !value.type ||
+        !value.credits ||
+        !value.totalLectures
     ) {
       alert("Please fill all the fields");
     } else {
       setLoading(true);
-      const student = {
-        name: value.name,
-        email: value.email,
-        password: value.password,
-        dob: value.dob,
-        gender: value.gender,
-        phone: value.phone,
+      const subject = {
+        subjectName: value.subjectName,
+        subjectCode: value.subjectCode,
         department: value.department,
         semester: value.semester,
-        rollNo: value.rollNo,
+        teacher: value.teacher,
+        type: value.type,
+        credits: value.credits,
+        totalLectures: value.totalLectures,
       };
-      console.log(student);
+      console.log(subject);
       try {
-        await fetch("http://localhost:8000/admin/addstudent", {
+        await fetch("http://localhost:8000/admin/addsubject", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(student),
+          body: JSON.stringify(subject),
         });
       } catch (err) {
         console.log(err);
       }
-      alert("Student added successfully");
+      alert("Subject added successfully");
       setValue({
-        name: "",
-        email: "",
-        password: "",
-        dob: "",
-        gender: "",
-        phone: "",
+        subjectName: "",
+        subjectCode: "",
         department: "",
         semester: "",
-        rollNo: "",
+        teacher: "",
+        type: "",
+        credits: "",
+        totalLectures: "",
       });
       setLoading(false);
     }
@@ -96,95 +105,36 @@ const Body = () => {
       <div className="space-y-5">
         <div className="flex text-gray-400 items-center space-x-2">
           <EngineeringIcon />
-          <h1>Add Student</h1>
+          <h1>Add Subject</h1>
         </div>
         <div className=" mr-10 bg-white flex flex-col rounded-xl ">
           <form className={classes.adminForm0} onSubmit={handleSubmit}>
             <div className={classes.adminForm1}>
               <div className={classes.adminForm2l}>
                 <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Name :</h1>
+                  <h1 className={classes.adminLabel}>Subject Name :</h1>
                   <input
-                    placeholder="Full Name"
+                    placeholder="Subject Name"
                     required
                     className={classes.adminInput}
                     type="text"
-                    value={value.name}
+                    value={value.subjectName}
                     onChange={(e) =>
-                      setValue({ ...value, name: e.target.value })
+                      setValue({ ...value, subjectName: e.target.value })
                     }
                   />
                 </div>
                 <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Email Id:</h1>
+                  <h1 className={classes.adminLabel}>Subject Code :</h1>
 
                   <input
-                    placeholder="Email"
+                    placeholder="Subject Code"
                     className={classes.adminInput}
                     required
-                    type="email"
-                    value={value.email}
+                    type="text"
+                    value={value.subjectCode}
                     onChange={(e) =>
-                      setValue({ ...value, email: e.target.value })
-                    }
-                  />
-                </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Password :</h1>
-
-                  <input
-                    placeholder="Password"
-                    required
-                    className={classes.adminInput}
-                    type="password"
-                    value={value.password}
-                    onChange={(e) =>
-                      setValue({ ...value, password: e.target.value })
-                    }
-                  />
-                </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Gender :</h1>
-                  <Select
-                    required
-                    displayEmpty
-                    sx={{ height: 36 }}
-                    inputProps={{ "aria-label": "Without label" }}
-                    value={value.gender}
-                    onChange={(e) =>
-                      setValue({ ...value, gender: e.target.value })
-                    }
-                  >
-                    <MenuItem value="">None</MenuItem>
-                    <MenuItem value="male">Male</MenuItem>
-                    <MenuItem value="female">Female</MenuItem>
-                    <MenuItem value="other">Other</MenuItem>
-                  </Select>
-                </div>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Date of Birth :</h1>
-                  <input
-                    required
-                    className={classes.adminInput}
-                    type="date"
-                    value={value.dob}
-                    onChange={(e) =>
-                      setValue({ ...value, dob: e.target.value })
-                    }
-                  />
-                </div>
-              </div>
-              <div className={classes.adminForm2r}>
-                <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Phone Number :</h1>
-                  <input
-                    required
-                    placeholder="Phone Number"
-                    className={classes.adminInput}
-                    type="number"
-                    value={value.phone}
-                    onChange={(e) =>
-                      setValue({ ...value, phone: e.target.value })
+                      setValue({ ...value, subjectCode: e.target.value })
                     }
                   />
                 </div>
@@ -228,15 +178,75 @@ const Body = () => {
                     ))}
                   </Select>
                 </div>
+              </div>
+              <div className={classes.adminForm2r}>
                 <div className={classes.adminForm3}>
-                  <h1 className={classes.adminLabel}>Roll Number :</h1>
-                  <input
+                  <h1 className={classes.adminLabel}>Teacher :</h1>
+                  <Select
                     required
-                    className={classes.adminInput}
-                    type="text"
-                    value={value.rollNo}
+                    displayEmpty
+                    sx={{ height: 36 }}
+                    inputProps={{ "aria-label": "Without label" }}
+                    value={value.teacher}
                     onChange={(e) =>
-                      setValue({ ...value, rollNo: e.target.value })
+                      setValue({ ...value, teacher: e.target.value })
+                    }
+                  >
+                    <MenuItem value="">None</MenuItem>
+                    {teacher.map((item) => (
+                      <MenuItem key={item._id} value={item._id}>
+                        {item.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </div>
+                <div className={classes.adminForm3}>
+                  <h1 className={classes.adminLabel}>Type :</h1>
+                  <Select
+                    required
+                    displayEmpty
+                    sx={{ height: 36 }}
+                    inputProps={{ "aria-label": "Without label" }}
+                    value={value.type}
+                    onChange={(e) =>
+                      setValue({ ...value, type: e.target.value })
+                    }
+                  >
+                    <MenuItem value="">None</MenuItem>
+                    <MenuItem value="theory">Theory</MenuItem>
+                    <MenuItem value="practical">Practical</MenuItem>
+                  </Select>
+                </div>
+                <div className={classes.adminForm3}>
+                  <h1 className={classes.adminLabel}>Credits :</h1>
+                  <Select
+                    required
+                    displayEmpty
+                    sx={{ height: 36 }}
+                    inputProps={{ "aria-label": "Without label" }}
+                    value={value.credits}
+                    onChange={(e) =>{
+                        console.log("Selected value:", e.target.value);
+                        setValue({ ...value, credits: e.target.value })
+                    }
+                    }
+                  >
+                    <MenuItem value="">None</MenuItem>
+                    <MenuItem value="1">1</MenuItem>
+                    <MenuItem value="3">3</MenuItem>
+                    <MenuItem value="4">4</MenuItem>
+                  </Select>
+                </div>
+                <div className={classes.adminForm3}>
+                  <h1 className={classes.adminLabel}>Total Lectures :</h1>
+                  <input
+                    placeholder="No. of Lectures"
+                    className={classes.adminInput}
+                    required
+                    type="number"
+                    value={value.totalLectures}
+                    onChange={(e) =>
+                      setValue({ ...value, totalLectures: e.target.value })
                     }
                   />
                 </div>
@@ -249,13 +259,14 @@ const Body = () => {
               <button
                 onClick={() => {
                   setValue({
-                    name: "",
-                    dob: "",
-                    email: "",
-                    phone: "",
-                    gender: "",
-                    joiningYear: "",
-                    password: "",
+                    subjectName: "",
+                    subjectCode: "",
+                    department: "",
+                    semester: "",
+                    teacher: "",
+                    type: "",
+                    credits: "",
+                    totalLectures: "",
                   });
                   setError({});
                 }}

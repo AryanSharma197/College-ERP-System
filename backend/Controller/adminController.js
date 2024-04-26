@@ -2,6 +2,7 @@ const Admin = require("../Models/admin.js");
 const Department = require("../Models/department.js");
 const Faculty = require("../Models/faculty.js");
 const Student = require("../Models/student.js");
+const Subject = require("../Models/subject.js");
 const Notice = require("../Models/notice.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -125,7 +126,7 @@ const addAdmin = async (req, res) => {
   try {
     const { name, email, password, dob, gender, phone, joiningYear } = req.body;
     const errors = { Error: String };
-    const existingAdmin = await Admin.findOne({ email }) 
+    const existingAdmin = await Admin.findOne({ email });
     if (existingAdmin) {
       errors.Error = "Already exists";
       return res.status(400).json({ errors });
@@ -150,7 +151,7 @@ const addAdmin = async (req, res) => {
 const getAllAdmin = async (req, res) => {
   try {
     const admins = await Admin.find();
-    res.status(200).json( admins );
+    res.status(200).json(admins);
   } catch (error) {
     res.status(500).json(error);
   }
@@ -178,7 +179,7 @@ const addDepartment = async (req, res) => {
     let add = departments.length + 1;
     let departmentCode;
     if (add < 10) {
-      departmentCode = departmen +"0" + add.toString();
+      departmentCode = departmen + "0" + add.toString();
     } else {
       departmentCode = department + add.toString();
     }
@@ -190,31 +191,40 @@ const addDepartment = async (req, res) => {
       result: newDepartment,
     });
   } catch (error) {
-    res.status(500).json({message:"Error"});
+    res.status(500).json({ message: "Error" });
   }
 };
 
 const getAllDepartments = async (req, res) => {
   try {
     const departments = await Department.find();
-    res.status(200).json( departments );
+    res.status(200).json(departments);
   } catch (error) {
     res.status(500).json(error);
   }
 };
 
 const deleteDepartment = async (req, res) => {
-    try{
-        const deletedDepartment = await Department.findByIdAndDelete(req.params.id);
-        res.status(200).json({ result: deletedDepartment });
-    } catch(error){
-        res.status(500).json(error);
-    }
-}
+  try {
+    const deletedDepartment = await Department.findByIdAndDelete(req.params.id);
+    res.status(200).json({ result: deletedDepartment });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
 
 const addFaculty = async (req, res) => {
-  try{
-    const { name, email, password, gender, phone, joiningYear, department, dob } = req.body;
+  try {
+    const {
+      name,
+      email,
+      password,
+      gender,
+      phone,
+      joiningYear,
+      department,
+      dob,
+    } = req.body;
     const errors = { Error: String };
     const existingFaculty =
       (await Faculty.findOne({ email })) || (await Faculty.findOne({ phone }));
@@ -231,15 +241,14 @@ const addFaculty = async (req, res) => {
       phone,
       joiningYear,
       department,
-      dob
+      dob,
     });
     await newFaculty.save();
     res.status(200).json({ result: newFaculty });
-  }
-  catch(error){
+  } catch (error) {
     res.status(500).json(error);
   }
-}
+};
 
 // const getALlFaculty = async (req, res) => {
 //   try{
@@ -258,11 +267,11 @@ const getAllFaculty = async (req, res) => {
           from: "departments", // Name of the department collection
           localField: "department",
           foreignField: "_id",
-          as: "department"
-        }
+          as: "department",
+        },
       },
       {
-        $unwind: "$department"
+        $unwind: "$department",
       },
       {
         $project: {
@@ -274,33 +283,40 @@ const getAllFaculty = async (req, res) => {
           dob: 1,
           joiningYear: 1,
           passwordUpdated: 1,
-          department: "$department.department" // Project the department name
-        }
-      }
+          department: "$department.department", // Project the department name
+        },
+      },
     ]);
 
     res.status(200).json(faculties);
   } catch (error) {
     res.status(500).json(error);
   }
-}
-
-
+};
 
 const deleteFaculty = async (req, res) => {
-  try{
+  try {
     const deletedFaculty = await Faculty.findByIdAndDelete(req.params.id);
     res.status(200).json({ result: deletedFaculty });
-  } catch(error){
+  } catch (error) {
     res.status(500).json(error);
   }
-}
+};
 
 const addSubject = async (req, res) => {
-  try{
-    const {subjectName, subjectCode, department, semester, teacher, totalLectures, type, credits} = req.body;
+  try {
+    const {
+      subjectName,
+      subjectCode,
+      department,
+      semester,
+      teacher,
+      totalLectures,
+      type,
+      credits,
+    } = req.body;
     const errors = { Error: String };
-    const existingSubject = await Subject.findOne({subjectCode});
+    const existingSubject = await Subject.findOne({ subjectCode });
     if (existingSubject) {
       errors.Error = "Already exists";
       return res.status(400).json({ errors });
@@ -313,38 +329,84 @@ const addSubject = async (req, res) => {
       teacher,
       totalLectures,
       type,
-      credits
-    })
+      credits,
+    });
     await newSubject.save();
     res.status(200).json({ result: newSubject });
-  } catch(error){
-    res.status(500).json(error);
+  } catch (error) {
+    res.status(500).json({ message: "Error" });
   }
-}
+};
 
 const getAllSubject = async (req, res) => {
-  try{
-    const subjects = await Subject.find();
-    res.status(200).json({ result: subjects });
-  } catch(error){
+  try {
+    const subjects = await Subject.aggregate([
+      {
+        $lookup: {
+          from: "departments",
+          localField: "department",
+          foreignField: "_id",
+          as: "department",
+        },
+      },
+      {
+        $lookup: {
+          from: "faculties",
+          localField: "teacher",
+          foreignField: "_id",
+          as: "teacher",
+        },
+      },
+      {
+        $unwind: "$department",
+      },
+      {
+        $unwind: "$teacher",
+      },
+      {
+        $project: {
+          subjectName: 1,
+          subjectCode: 1,
+          department: "$department.department",
+          semester: 1,
+          teacher: "$teacher.name",
+          totalLectures: 1,
+          type: 1,
+          credits: 1,
+        },
+      },
+    ])
+    res.status(200).json(subjects);
+  } catch (error) {
     res.status(500).json(error);
   }
-}
+};
 
 const deleteSubject = async (req, res) => {
-  try{
+  try {
     const deletedSubject = await Subject.findByIdAndDelete(req.params.id);
     res.status(200).json({ result: deletedSubject });
-  } catch(error){
+  } catch (error) {
     res.status(500).json(error);
   }
-}
+};
 
 const addStudent = async (req, res) => {
-  try{
-    const {name, email, password, dob, gender, phone, department, semester, rollNo} = req.body;
+  try {
+    const {
+      name,
+      email,
+      password,
+      dob,
+      gender,
+      phone,
+      department,
+      semester,
+      rollNo,
+    } = req.body;
     const errors = { Error: String };
-    const existingStudent = (await Student.findOne({email})) || (await Student.findOne({phone}));
+    const existingStudent =
+      (await Student.findOne({ email })) || (await Student.findOne({ phone }));
     if (existingStudent) {
       errors.Error = "Already exists";
       return res.status(400).json({ errors });
@@ -359,65 +421,92 @@ const addStudent = async (req, res) => {
       phone,
       department,
       semester,
-      rollNo
-    })
+      rollNo,
+    });
     await newStudent.save();
     res.status(200).json({ result: newStudent });
-  } catch(error){
+  } catch (error) {
     res.status(500).json(error);
   }
-}
+};
 
 const getAllStudent = async (req, res) => {
-  try{
-    const students = await Student.find();
-    res.status(200).json( students );
-  } catch(error){
+  try {
+    const students = await Student.aggregate([
+      {
+        $lookup: {
+          from: "departments",
+          localField: "department",
+          foreignField: "_id",
+          as: "department",
+        },
+      },
+      {
+        $unwind: "$department",
+      },
+      {
+        $project: {
+          name: 1,
+          email: 1,
+          password: 1,
+          gender: 1,
+          phone: 1,
+          dob: 1,
+          semester: 1,
+          rollNo: 1,
+          department: "$department.department",
+        },
+      },
+    ]);
+    res.status(200).json(students);
+  } catch (error) {
     res.status(500).json(error);
   }
-}
+};
 
 const deleteStudent = async (req, res) => {
-  try{
+  try {
     const deletedStudent = await Student.findByIdAndDelete(req.params.id);
     res.status(200).json({ result: deletedStudent });
-  } catch(error){
+  } catch (error) {
     res.status(500).json(error);
   }
-}
+};
 
 const createNotice = async (req, res) => {
-  try{
-    const {topic, description, noticeFor} = req.body;
+  try {
+    const { topic, description, to, from, date } = req.body;
     const newNotice = new Notice({
-      title,
+      topic,
       description,
-      date
-    })
+      date,
+      to,
+      from,
+    });
     await newNotice.save();
     res.status(200).json({ result: newNotice });
-  } catch(error){
+  } catch (error) {
     res.status(500).json(error);
   }
-}
+};
 
 const getAllNotice = async (req, res) => {
-  try{
+  try {
     const notices = await Notice.find();
-    res.status(200).json({ result: notices });
-  } catch(error){
+    res.status(200).json(notices);
+  } catch (error) {
     res.status(500).json(error);
   }
-}
+};
 
 const deleteNotice = async (req, res) => {
-  try{
+  try {
     const deletedNotice = await Notice.findByIdAndDelete(req.params.id);
     res.status(200).json({ result: deletedNotice });
-  } catch(error){
+  } catch (error) {
     res.status(500).json(error);
   }
-}
+};
 
 module.exports = {
   createAdmin,
@@ -430,7 +519,7 @@ module.exports = {
   addDepartment,
   getAllDepartments,
   deleteDepartment,
-  addFaculty, 
+  addFaculty,
   getAllFaculty,
   deleteFaculty,
   addSubject,
@@ -441,5 +530,5 @@ module.exports = {
   deleteStudent,
   createNotice,
   getAllNotice,
-  deleteNotice
+  deleteNotice,
 };

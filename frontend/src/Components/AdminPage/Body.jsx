@@ -7,60 +7,32 @@ import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import "react-calendar/dist/Calendar.css";
 import ReplyIcon from "@mui/icons-material/Reply";
+import Notice from "../Notices/Notice";
+import ShowNotice from "../Notices/ShowNotice";
+import { fetchAdmins,fetchDepartments,fetchFaculty,fetchStudents,fetchNotices } from "../../Utils/FetchData";
 const Body = () => {
+  const [openNotice, setOpenNotice] = useState({});
   const [adminLength, setAdminLength] = useState(0);
   const [facultyLength, setFacultyLength] = useState(0);
   const [studentLength, setStudentLength] = useState(0);
   const [departmentLength, setDepartmentLength] = useState(0);
-  const fetchAdmins = async () => {
-    try{
-      const res = await fetch("http://localhost:8000/admin/getalladmin");
-      const data = await res.json();
-      setAdminLength(data.length);
-      console.log(adminLength);
-    } catch (error) {
-      console.log(error);
+  const [noticeData, setNoticeData] = useState([]);
+  useEffect(()=>{
+    const fetchData = async() =>{
+      const {adminLength} = await fetchAdmins()
+      setAdminLength(adminLength)
+      const {facultyLength} = await fetchFaculty()
+      setFacultyLength(facultyLength)
+      const {departmentLength} = await fetchDepartments()
+      setDepartmentLength(departmentLength)
+      const {studentLength} = await fetchStudents()
+      setStudentLength(studentLength)
+      const {noticeData} = await fetchNotices()
+      setNoticeData(noticeData)
     }
-  }
-  const fetchFaculty = async () => {
-    try{
-      const res = await fetch("http://localhost:8000/admin/getallfaculty");
-      const data = await res.json();
-      setFacultyLength(data.length);
-      console.log(facultyLength);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  const fetchStudents = async () => {
-    try{
-      const res = await fetch("http://localhost:8000/admin/getallstudent");
-      const data = await res.json();
-      setStudentLength(data.length);
-      console.log(studentLength);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  const fetchDepartments = async () => {
-    try{
-      const res = await fetch("http://localhost:8000/admin/getalldepartment");
-      const data = await res.json();
-      setDepartmentLength(data.length);
-      console.log(departmentLength);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  useEffect(() => {
-    fetchAdmins();
-    fetchFaculty();
-    fetchStudents();
-    fetchDepartments();
-  }, [])
+    fetchData()
+  },[])
   const [open, setOpen] = useState(false);
-  // const [openNotice, setOpenNotice] = useState({});
-//   const notices = useSelector((state) => state.admin.notices.result);
   const [value, onChange] = useState(new Date());
 
   return (
@@ -132,8 +104,8 @@ const Body = () => {
                 </h1>
               </div>
               <div className="mx-5 mt-5 space-y-3 overflow-y-auto h-[12rem]">
-                {/* {!open ? (
-                  notices?.map((notice, idx) => (
+                {!open ? (
+                  noticeData?.map((notice, idx) => (
                     <div
                       onClick={() => {
                         setOpen(true);
@@ -145,9 +117,10 @@ const Body = () => {
                   ))
                 ) : (
                   <ShowNotice notice={openNotice} />
-                )} */}
+                )}
               </div>
             </div>
+
           </div>
         </div>
       </div>

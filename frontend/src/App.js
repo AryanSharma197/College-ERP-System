@@ -12,6 +12,10 @@ import DeleteDepartment from "./Components/AdminPage/DeleteDepartment/DeleteDepa
 import AddFaculty from "./Components/AdminPage/AddFaculty/AddFaculty";
 import DeleteFaculty from "./Components/AdminPage/DeleteFaculty/DeleteFaculty";
 import AddStudent from "./Components/AdminPage/AddStudent/AddStudent";
+import DeleteStudent from "./Components/AdminPage/DeleteStudent/DeleteStudent";
+import AddSubject from "./Components/AdminPage/AddSubject/AddSubject";
+import DeleteSubject from "./Components/AdminPage/DeleteSubject/DeleteSubject";
+import CreateNotice from "./Components/AdminPage/CreateNotice/CreateNotice";
 
 function App() {
   return (
@@ -28,6 +32,10 @@ function App() {
               <Route path="/admin/addfaculty" element={<AddFaculty/>}/>
               <Route path="/admin/deletefaculty" element={<DeleteFaculty/>}/>
               <Route path="/admin/addstudent" element={<AddStudent/>}/>
+              <Route path="/admin/deletestudent" element={<DeleteStudent/>}/>
+              <Route path="/admin/addsubject" element={<AddSubject/>}/>
+              <Route path="/admin/deletesubject" element={<DeleteSubject/>}/>
+              <Route path="/admin/createnotice" element={<CreateNotice/>}/>
           {/* <Route path="/login/facultylogin" element={<FacultyLogin/>}/> */}
           {/* <Route path="/login/studentlogin" element={<StudentLogin/>}/> */}
           {/* <Route path="/login/librarianlogin" element={<LibraryLogin/>}/> */}

@@ -9,7 +9,15 @@ const noticeSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    noticeFor: {
+    to: {
+        type: String,
+        required: true
+    },
+    from: {
+        type: String,
+        required: true
+    },
+    date: {
         type: String,
         required: true
     }

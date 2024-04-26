@@ -14,7 +14,7 @@ const subjectSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "departments",
         required: true,
-        unique: true
+        // unique: true
     },
     semester: {
         type: String,
@@ -25,7 +25,7 @@ const subjectSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "faculties",
         required: true,
-        unique: true
+        // unique: true
     },
     totalLectures: {
         type: Number,
