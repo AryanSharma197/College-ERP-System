@@ -7,14 +7,14 @@ This is a College-Management-System project having 4 different modules :-
 
 To run this project follow the following steps :-
 
-Step 1 : Open the command prompt in your system and enter the command -> git clone https://github.com/AryanSharma197/College-ERP-System <br>
-Step 2 : Open the project in VS code <br>
+Step 1 : Open the command prompt in your system and enter the command -> git clone https://github.com/AryanSharma197/College-ERP-System <br> <br>
+Step 2 : Open the project in VS code <br> <br>
 Step 3 : Open integrated terminal and enter :- <br>
       1. cd frontend <br>
       2. npm i       // This will install all the required packages for frontend / client side <br>
-      3. npm start   // This will run the frontend on localhost:3000 <br>
+      3. npm start   // This will run the frontend on localhost:3000 <br> <br>
 Step 4: Open another integrated terminal and enter :- <br>
       1. cd backend <br>
       2. npm i       // This will install all the necessary packages for backend / server <br>
-      3. npm start   // This will run the backend server <br>
+      3. npm start   // This will run the backend server <br> <br>
 Step 5: Go through App.js in frontend folder for frontend routes and index.js in backend folder for backend routes <br>
