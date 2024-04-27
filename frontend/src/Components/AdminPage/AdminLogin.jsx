@@ -30,7 +30,9 @@ const AdminLogin = () => {
         })
       });
       if (res.ok) {
-        localStorage.setItem('admin', JSON.stringify({ email: email, password: password }));
+        const token = await res.json();
+        console.log(token)
+        localStorage.setItem('admin', JSON.stringify({ email: email, password: password , token: token}));
         navigate('/admin/home')  
       } else {
         alert("Invalid Credentials")

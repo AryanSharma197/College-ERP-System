@@ -4,6 +4,7 @@ const Faculty = require("../Models/faculty.js");
 const Student = require("../Models/student.js");
 const Subject = require("../Models/subject.js");
 const Notice = require("../Models/notice.js");
+const Librarian = require("../Models/librarian.js");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -62,9 +63,9 @@ const adminLogin = async (req, res) => {
         id: existingAdmin._id,
       },
       `${process.env.JWT_SECRET}`,
-      { expiresIn: "1h" }
+      { expiresIn: "30m" }
     );
-    res.status(200).json({ result: existingAdmin, token: token });
+    res.status(200).json(token);
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
   }
@@ -250,14 +251,7 @@ const addFaculty = async (req, res) => {
   }
 };
 
-// const getALlFaculty = async (req, res) => {
-//   try{
-//     const faculties = await Faculty.find();
-//     res.status(200).json( faculties );
-//   } catch(error){
-//     res.status(500).json(error);
-//   }
-// }
+
 
 const getAllFaculty = async (req, res) => {
   try {
@@ -508,6 +502,50 @@ const deleteNotice = async (req, res) => {
   }
 };
 
+const addLibrarian = async (req, res) => {
+  try {
+    const { name, email, password, dob, gender, phone, joiningYear } = req.body;
+    const errors = { Error: String };
+    const existingLibrarian = await Librarian.findOne({ email });
+    if (existingLibrarian) {
+      errors.Error = "Already exists";
+      return res.status(400).json({ errors });
+    }
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const newLibrarian = new Librarian({
+      name,
+      email,
+      password: hashedPassword,
+      dob,
+      gender,
+      phone,
+      joiningYear,
+    });
+    await newLibrarian.save();
+    res.status(200).json({ result: newLibrarian });
+  } catch (error) {
+    res.status(500).json(error);
+    }
+}
+
+const getAllLibrarian = async (req, res) => {
+  try {
+    const librarians = await Librarian.find();
+    res.status(200).json(librarians);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+}
+
+const deleteLibrarian = async (req, res) => {
+  try {
+    const deletedLibrarian = await Librarian.findByIdAndDelete(req.params.id);
+    res.status(200).json({ result: deletedLibrarian });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+}
+
 module.exports = {
   createAdmin,
   adminLogin,
@@ -531,4 +569,7 @@ module.exports = {
   createNotice,
   getAllNotice,
   deleteNotice,
+  addLibrarian,
+  getAllLibrarian,
+  deleteLibrarian
 };

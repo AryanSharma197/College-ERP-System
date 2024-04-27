@@ -16,6 +16,8 @@ import DeleteStudent from "./Components/AdminPage/DeleteStudent/DeleteStudent";
 import AddSubject from "./Components/AdminPage/AddSubject/AddSubject";
 import DeleteSubject from "./Components/AdminPage/DeleteSubject/DeleteSubject";
 import CreateNotice from "./Components/AdminPage/CreateNotice/CreateNotice";
+import AddLibrarian from "./Components/AdminPage/AddLibrarian/AddLibrarian";
+import DeleteLibrarian from "./Components/AdminPage/DeleteLibrarian/DeleteLibrarian";
 
 function App() {
   return (
@@ -36,6 +38,8 @@ function App() {
               <Route path="/admin/addsubject" element={<AddSubject/>}/>
               <Route path="/admin/deletesubject" element={<DeleteSubject/>}/>
               <Route path="/admin/createnotice" element={<CreateNotice/>}/>
+              <Route path="/admin/addlibrarian" element={<AddLibrarian/>}/>
+              <Route path="/admin/deletelibrarian" element={<DeleteLibrarian/>}/>
           {/* <Route path="/login/facultylogin" element={<FacultyLogin/>}/> */}
           {/* <Route path="/login/studentlogin" element={<StudentLogin/>}/> */}
           {/* <Route path="/login/librarianlogin" element={<LibraryLogin/>}/> */}

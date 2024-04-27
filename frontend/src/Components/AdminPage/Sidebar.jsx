@@ -147,7 +147,7 @@ const Sidebar = () => {
             <h1 className="font-normal">Delete Subject</h1>
           </NavLink>
         </div>
-        {/* <div className="">
+        <div className="">
 
           <NavLink
             to="/admin/addlibrarian"
@@ -165,7 +165,7 @@ const Sidebar = () => {
             <DeleteIcon className="" />
             <h1 className="font-normal">Delete Librarian</h1>
           </NavLink>
-        </div> */}
+        </div>
       </div>
     </div>
   );

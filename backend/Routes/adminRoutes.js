@@ -21,7 +21,10 @@ const {
   deleteStudent,
   createNotice,
   getAllNotice,
-  deleteNotice
+  deleteNotice,
+  addLibrarian,
+  getAllLibrarian,
+  deleteLibrarian
 } = require("../Controller/adminController");
 const router = express.Router();
 
@@ -58,5 +61,10 @@ router.delete("/deletestudent/:id", deleteStudent);
 router.post("/createnotice", createNotice);
 router.get("/getallnotice", getAllNotice);
 router.delete("/deletenotice/:id", deleteNotice);
+
+//LIBRARIAN ROUTES
+router.post("/addlibrarian", addLibrarian);
+router.get("/getalllibrarian", getAllLibrarian);
+router.delete("/deletelibrarian/:id", deleteLibrarian);
 
 module.exports = router;
