@@ -39,7 +39,7 @@ const Body = () => {
       });
       const newData = data.filter((item) => item._id !== id);
       setData(newData);
-      alert("Admin Deleted Successfully");
+      alert("Librarian Deleted Successfully");
     } catch (error) {
       console.error("Error deleting entry:", error);
     }
@@ -50,7 +50,7 @@ const Body = () => {
       <div className="space-y-5">
         <div className="flex text-gray-400 items-center space-x-2">
           <DeleteIcon />
-          <h1>All Admins</h1>
+          <h1>All Librarians</h1>
         </div>
         <div className="overflow-x-auto">
           <table className="table-auto border-collapse w-full">

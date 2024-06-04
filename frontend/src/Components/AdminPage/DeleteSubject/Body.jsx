@@ -14,7 +14,6 @@ const Body = () => {
       }
     };
     fetchSubject();
-    console.log(data);
   }, []);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -40,7 +39,7 @@ const Body = () => {
       });
       const newData = data.filter((item) => item._id !== id);
       setData(newData);
-      alert("Student Deleted Successfully");
+      alert("Subject Deleted Successfully");
     } catch (error) {
       console.error("Error deleting entry:", error);
     }

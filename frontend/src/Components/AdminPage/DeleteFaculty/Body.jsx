@@ -40,7 +40,7 @@ const Body = () => {
       });
       const newData = data.filter((item) => item._id !== id);
       setData(newData);
-      alert("Admin Deleted Successfully");
+      alert("Faculty Deleted Successfully");
     } catch (error) {
       console.error("Error deleting entry:", error);
     }
